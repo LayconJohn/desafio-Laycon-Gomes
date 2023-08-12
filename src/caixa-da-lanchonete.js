@@ -7,7 +7,10 @@ class CaixaDaLanchonete {
         if (this.verificaCarrinhoVazio(itens)) {
             return "Não há itens no carrinho de compra!"
         }
-
+        const itensCompra = this.tratarCarrinho(itens);
+        if (itensCompra === undefined) {
+            return "Quantidade inválida!"
+        }
 
         return "";
     }
@@ -26,7 +29,17 @@ class CaixaDaLanchonete {
         return false;
     }
 
- 
+    tratarCarrinho(itens) {
+        const itensObject = [];
+        itens.array.forEach(element => {
+            const arrayElement = element.split(",");
+            if (Number(arrayElement[1]) < 1) {
+                return undefined;
+            }
+            itensObject.push({nome: arrayElement[0], quantidade: Number(arrayElement[1])});
+        });
+        return itensObject;
+    }
 }
 
 export { CaixaDaLanchonete };
