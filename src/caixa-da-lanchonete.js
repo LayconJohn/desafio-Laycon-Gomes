@@ -14,8 +14,8 @@ class CaixaDaLanchonete {
         if (!this.validaItem(itensCompra)) {
             return "Item inválido!"
         }
-
-        return "";
+        const valorTotal = this.calculaDesconto(metodoDePagamento, this.calculaValor(itensCompra));
+        return `R$ ${valorTotal}`;
     }
 
     validaMetodoPagamento(metodoDePagamento) {
@@ -63,6 +63,36 @@ class CaixaDaLanchonete {
         })
         return true;
     }
+
+    calculaValor(itensObject) {
+        let valorFinal = 0;
+        itensObject.map(item => {
+            if (item.nome === "cafe") {
+                valorFinal =+ 3 * item.quantidade;
+            }
+            if (item.nome === "suco") {
+                valorFinal =+ 6.2 * item.quantidade;
+            }
+            if (item.nome === "sanduiche") {
+                valorFinal =+ 6.5 * item.quantidade;
+            }
+            if (item.nome === "salgado") {
+                valorFinal =+ 6.5 * item.quantidade;
+            }
+        })
+        return valorFinal;
+    }
+
+    calculaDesconto(metodoDePagamento, valor) {
+        if (metodoDePagamento === "dinheiro") {
+            return 0.95 * valor;
+        }
+        if (metodoDePagamento === "credito") {
+            return 1.03 * valor;
+        }
+        return valor;
+    }
+
 }
 
 export { CaixaDaLanchonete };
