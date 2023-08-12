@@ -15,7 +15,7 @@ class CaixaDaLanchonete {
             return "Item inválido!"
         }
         const valorTotal = this.calculaDesconto(metodoDePagamento, this.calculaValor(itensCompra));
-        return `R$ ${valorTotal}`;
+        return `R$ ${this.trataValorFinal(valorTotal)}`;
     }
 
     validaMetodoPagamento(metodoDePagamento) {
@@ -91,6 +91,10 @@ class CaixaDaLanchonete {
             return 1.03 * valor;
         }
         return valor;
+    }
+
+    trataValorFinal(valor) {
+        return valor.toString().replace(".", ",");
     }
 
 }
