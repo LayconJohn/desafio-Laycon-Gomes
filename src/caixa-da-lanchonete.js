@@ -11,6 +11,9 @@ class CaixaDaLanchonete {
         if (itensCompra === undefined) {
             return "Quantidade inválida!"
         }
+        if (!this.validaItem(itensCompra)) {
+            return "Item inválido!"
+        }
 
         return "";
     }
@@ -39,6 +42,26 @@ class CaixaDaLanchonete {
             itensObject.push({nome: arrayElement[0], quantidade: Number(arrayElement[1])});
         });
         return itensObject;
+    }
+
+    itensValidos() {
+        return [
+            "cafe",
+            "chantily", 
+            "suco",
+            "sanduiche",
+            "queijo",
+            "salgado",
+            "combo1",
+            "combo2" 
+        ]
+    }
+
+    validaItem(itensObject) {
+        itensObject.forEach(element => {
+            if (!this.itensValidos().find(element.nome)) return false;
+        })
+        return true;
     }
 }
 
