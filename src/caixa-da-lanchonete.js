@@ -18,7 +18,7 @@ class CaixaDaLanchonete {
             return "Item extra não pode ser pedido sem o principal"
         }
         const valorTotal = this.calculaDesconto(metodoDePagamento, this.calculaValor(itensCompra));
-        return `R$ ${this.trataValorFinal(valorTotal)}`;
+        return `R$ ${this.trataValorFinal(valorTotal.toFixed(2))}`;
     }
 
     validaMetodoPagamento(metodoDePagamento) {
@@ -36,12 +36,9 @@ class CaixaDaLanchonete {
     }
 
     verificaSeExistePratoPrincipal(itensObject) {
-        const filteredArray = itensObject.filter(item => {
-            (item.nome === "cafe" || item.nome === "sanduiche" || item.nome === "suco" || item.nome === "salgado")
+        itensObject.map(item => {
+            if (!(item.nome === "cafe" || item.nome === "sanduiche" || item.nome === "suco" || item.nome === "salgado")) return false;
         })
-        if (filteredArray.length < 1) {
-            return false;
-        }
         return true;
     }
 
@@ -71,8 +68,8 @@ class CaixaDaLanchonete {
     }
 
     validaItem(itensObject) {
-        itensObject?.forEach(element => {
-            if (!this.itensValidos().includes(element.nome)) return false;
+        const containValue = itensObject?.map(item => {
+            if (!this.itensValidos().includes(item.nome)) return false;
         })
         return true;
     }
@@ -82,28 +79,33 @@ class CaixaDaLanchonete {
         itensObject.map(item => {
             if (item.nome === "cafe") {
                 valorFinal =+ 3 * item.quantidade;
-            }
-            if (item.nome === "suco") {
+            }   else if (item.nome === "chantily") {
+                valorFinal =+ 1.5 * item.quantidade;
+            } else if (item.nome === "queijo") {
+                valorFinal =+ 2 * item.quantidade;
+            } else if (item.nome === "combo1") {
+                valorFinal =+ 9.5 * item.quantidade;
+            } else if (item.nome === "combo2") {
+                valorFinal =+ 7.5 * item.quantidade;
+            } else if (item.nome === "suco") {
                 valorFinal =+ 6.2 * item.quantidade;
-            }
-            if (item.nome === "sanduiche") {
+            } else if (item.nome === "sanduiche") {
                 valorFinal =+ 6.5 * item.quantidade;
-            }
-            if (item.nome === "salgado") {
+            } else if (item.nome === "salgado") {
                 valorFinal =+ 6.5 * item.quantidade;
             }
         })
-        return valorFinal;
+        return valorFinal.toFixed(2);
     }
 
     calculaDesconto(metodoDePagamento, valor) {
         if (metodoDePagamento === "dinheiro") {
-            return 0.95 * valor;
+            return 0.95 * Number(valor);
         }
         if (metodoDePagamento === "credito") {
-            return 1.03 * valor;
+            return 1.03 * Number(valor);
         }
-        return valor;
+        return Number(valor);
     }
 
     trataValorFinal(valor) {
