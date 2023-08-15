@@ -14,6 +14,9 @@ class CaixaDaLanchonete {
         if (!this.validaItem(itensCompra)) {
             return "Item inválido!"
         }
+        if (!this.verificaSeExistePratoPrincipal(itensCompra)) {
+            return "Item extra não pode ser pedido sem o principal"
+        }
         const valorTotal = this.calculaDesconto(metodoDePagamento, this.calculaValor(itensCompra));
         return `R$ ${this.trataValorFinal(valorTotal)}`;
     }
@@ -32,9 +35,19 @@ class CaixaDaLanchonete {
         return false;
     }
 
+    verificaSeExistePratoPrincipal(itensObject) {
+        const filteredArray = itensObject.filter(item => {
+            (item.nome === "cafe" || item.nome === "sanduiche" || item.nome === "suco" || item.nome === "salgado")
+        })
+        if (filteredArray.length < 1) {
+            return false;
+        }
+        return true;
+    }
+
     tratarCarrinho(itens) {
         const itensObject = [];
-        itens.array.forEach(element => {
+        itens.forEach(element => {
             const arrayElement = element.split(",");
             if (Number(arrayElement[1]) < 1) {
                 return undefined;
@@ -58,8 +71,8 @@ class CaixaDaLanchonete {
     }
 
     validaItem(itensObject) {
-        itensObject.forEach(element => {
-            if (!this.itensValidos().find(element.nome)) return false;
+        itensObject?.forEach(element => {
+            if (!this.itensValidos().includes(element.nome)) return false;
         })
         return true;
     }
