@@ -17,7 +17,8 @@ class CaixaDaLanchonete {
         if (!this.verificaSeExistePratoPrincipal(itensCompra)) {
             return "Item extra não pode ser pedido sem o principal"
         }
-        const valorTotal = this.calculaDesconto(metodoDePagamento, this.calculaValor(itensCompra));
+        const valorParcial = this.calculaValor(itensCompra);
+        const valorTotal = this.calculaDesconto(metodoDePagamento, Number(valorParcial));
         return `R$ ${this.trataValorFinal(valorTotal.toFixed(2))}`;
     }
 
@@ -76,25 +77,26 @@ class CaixaDaLanchonete {
 
     calculaValor(itensObject) {
         let valorFinal = 0;
-        itensObject.map(item => {
+        for (const element of itensObject) {
+            const item = element;
             if (item.nome === "cafe") {
-                valorFinal =+ 3 * item.quantidade;
-            }   else if (item.nome === "chantily") {
-                valorFinal =+ 1.5 * item.quantidade;
+                valorFinal += (3 * item.quantidade);
+            } else if (item.nome === "chantily") {
+                valorFinal += (1.5 * item.quantidade);
             } else if (item.nome === "queijo") {
-                valorFinal =+ 2 * item.quantidade;
+                valorFinal += (2 * item.quantidade);
             } else if (item.nome === "combo1") {
-                valorFinal =+ 9.5 * item.quantidade;
+                valorFinal += (9.5 * item.quantidade);
             } else if (item.nome === "combo2") {
-                valorFinal =+ 7.5 * item.quantidade;
+                valorFinal += (7.5 * item.quantidade);
             } else if (item.nome === "suco") {
-                valorFinal =+ 6.2 * item.quantidade;
+                valorFinal += (6.2 * item.quantidade);
             } else if (item.nome === "sanduiche") {
-                valorFinal =+ 6.5 * item.quantidade;
+                valorFinal += (6.5 * item.quantidade);
             } else if (item.nome === "salgado") {
-                valorFinal =+ 6.5 * item.quantidade;
+                valorFinal += (7.25 * item.quantidade);
             }
-        })
+        }
         return valorFinal.toFixed(2);
     }
 
