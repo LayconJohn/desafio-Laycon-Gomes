@@ -18,7 +18,11 @@ class CaixaDaLanchonete {
             return "Item extra não pode ser pedido sem o principal"
         }
         const valorParcial = this.calculaValor(itensCompra);
+        if (valorParcial === undefined) {
+            return "Quantidade inválida!"
+        }
         const valorTotal = this.calculaDesconto(metodoDePagamento, Number(valorParcial));
+        if (valorTotal === 0) return "Quantidade inválida!"
         return `R$ ${this.trataValorFinal(valorTotal.toFixed(2))}`;
     }
 
@@ -46,6 +50,7 @@ class CaixaDaLanchonete {
     tratarCarrinho(itens) {
         const itensObject = [];
         itens.forEach(element => {
+            if (element.charAt(element.length - 1) == "0") return undefined;
             const arrayElement = element.split(",");
             if (Number(arrayElement[1]) < 1) {
                 return undefined;
@@ -79,6 +84,9 @@ class CaixaDaLanchonete {
         let valorFinal = 0;
         for (const element of itensObject) {
             const item = element;
+            if (item.quantidade === 0 ||  isNaN(item.quantidade)) {
+                return undefined;
+            }
             if (item.nome === "cafe") {
                 valorFinal += (3 * item.quantidade);
             } else if (item.nome === "chantily") {
