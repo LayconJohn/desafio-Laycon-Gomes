@@ -42,13 +42,32 @@ class CaixaDaLanchonete {
 
     verificaSeExistePratoPrincipal(itensObject) {
         let existePrincipal = false;
+        let existeExtra = false;
+        let pedidoExtra = "";
+        let pedidoPrincipal = "";
+
+        itensObject.map(item => {
+            if ((item.nome === "chantily" || item.nome === "queijo")) {
+                existeExtra = true
+                pedidoExtra = item.nome;
+            };
+        })
         itensObject.map(item => {
             if ((item.nome === "cafe" 
             || item.nome === "sanduiche" 
             || item.nome === "suco" 
             || item.nome === "salgado")) {
-                existePrincipal = true};
+                existePrincipal = true;
+                pedidoPrincipal = item.nome;
+            };
         })
+
+
+        if (existeExtra && !existePrincipal) return false;
+        if (existeExtra && existePrincipal) {
+            if (pedidoPrincipal === "cafe" && pedidoExtra !== "chantily") return false;
+            if (pedidoPrincipal === "sanduiche" && pedidoExtra !== "queijo") return false;
+        }
         return true;
     }
 
