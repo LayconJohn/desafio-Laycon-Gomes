@@ -75,11 +75,8 @@ class CaixaDaLanchonete {
         const itensObject = [];
         itens.forEach(element => {
             const arrayElement = element.split(",");
-
-            const itemObject = {nome: arrayElement[0], quantidade: Number(arrayElement[1])}
-            console.log(itemObject);
+            const itemObject = {nome: arrayElement[0], quantidade: Number(arrayElement[1])}          
             if ((itemObject.quantidade === 0) && itemObject.nome !== undefined) {
-                console.log(itemObject);
                 return "Quantidade inválida!"
             }
             if (itemObject.quantidade === undefined || itemObject.nome === undefined) {
