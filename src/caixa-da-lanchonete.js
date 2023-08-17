@@ -8,10 +8,10 @@ class CaixaDaLanchonete {
             return "Não há itens no carrinho de compra!"
         }
         const itensCompra = this.tratarCarrinho(itens);
-        if (itensCompra === undefined) {
+        if (itensCompra == "Quantidade inválida!") {
             return "Quantidade inválida!"
         }
-        if (!this.validaItem(itensCompra)) {
+        if (!this.validaItem(itensCompra) || itensCompra == "Item inválido!") {
             return "Item inválido!"
         }
         if (!this.verificaSeExistePratoPrincipal(itensCompra)) {
@@ -41,8 +41,13 @@ class CaixaDaLanchonete {
     }
 
     verificaSeExistePratoPrincipal(itensObject) {
+        let existePrincipal = false;
         itensObject.map(item => {
-            if (!(item.nome === "cafe" || item.nome === "sanduiche" || item.nome === "suco" || item.nome === "salgado")) return false;
+            if ((item.nome === "cafe" 
+            || item.nome === "sanduiche" 
+            || item.nome === "suco" 
+            || item.nome === "salgado")) {
+                existePrincipal = true};
         })
         return true;
     }
@@ -50,12 +55,18 @@ class CaixaDaLanchonete {
     tratarCarrinho(itens) {
         const itensObject = [];
         itens.forEach(element => {
-            if (element.charAt(element.length - 1) == "0") return undefined;
             const arrayElement = element.split(",");
-            if (Number(arrayElement[1]) < 1) {
-                return undefined;
+
+            const itemObject = {nome: arrayElement[0], quantidade: Number(arrayElement[1])}
+            console.log(itemObject);
+            if ((itemObject.quantidade === 0) && itemObject.nome !== undefined) {
+                console.log(itemObject);
+                return "Quantidade inválida!"
             }
-            itensObject.push({nome: arrayElement[0], quantidade: Number(arrayElement[1])});
+            if (itemObject.quantidade === undefined || itemObject.nome === undefined) {
+                return "Item inválido!";
+            }
+            itensObject.push(itemObject);
         });
         return itensObject;
     }
@@ -74,10 +85,11 @@ class CaixaDaLanchonete {
     }
 
     validaItem(itensObject) {
-        const containValue = itensObject?.map(item => {
-            if (!this.itensValidos().includes(item.nome)) return false;
+        let containValue = true;
+        itensObject?.map(item => {
+            if (!this.itensValidos().includes(item.nome)) containValue = false;
         })
-        return true;
+        return containValue;
     }
 
     calculaValor(itensObject) {
